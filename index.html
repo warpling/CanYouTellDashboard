@@ -8,11 +8,10 @@
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
     <style>
-      li {
-        font-size: 2em;
+/*      #results tr {
         animation: highlightNewItems 4s;
         -webkit-animation: highlightNewItems 4s;
-      }
+      }*/
 
       #results .date {
         width: 140px;
@@ -124,9 +123,9 @@
         }
         printStr  += "\n";
         for (var i = 0; i < arrayDim; i++) {
-          printStr += "color "  + i + ",";
+          printStr += "color "  + i;
           for (var j = 0; j < arrayDim; j++) {
-            printStr += (gridResults[i][j] + ", ");
+            printStr += ", " + gridResults[i][j];
           }
           printStr += "\n";
         }
