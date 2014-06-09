@@ -101,31 +101,56 @@
         var arrayDim = colors.length;
         var gridResults = new Array();
           for (var i = 0; i < arrayDim; i++) {
-            gridResults[i] = new Array(arrayDim);
-            for (var j = 0; j < arrayDim; j++) {
+            gridResults[i] = new Array(4*arrayDim);
+            for (var j = 0; j < 4*arrayDim; j++) {
               gridResults[i][j] = 0;
             }
           }
+
+        // Array of indexes for each cell set... weird
+        var subIndexes = new Array();
+        for (var i = 0; i < arrayDim; i++) {
+          subIndexes[i] = new Array(arrayDim);
+          for (var j = 0; j < arrayDim; j++) {
+            subIndexes[i][j] = 0;
+          }
+        }  
 
         // fill the grid with the results
         for (var i = 0; i < results.length; i++) {
           var result = results[i];
           if (result.choice_made == result.color_a) {
             // Bit shift in 1's
-            gridResults[result.color_a][result.color_b] <<= 1;
-            gridResults[result.color_a][result.color_b] += 1;
+            // gridResults[result.color_a][4*result.color_b + subIndexes[result.color_a][result.color_b]] <<= 1;
+            gridResults[result.color_a][4*result.color_b + subIndexes[result.color_a][result.color_b]] = 1;
+            // Bit shift in 0's
+            // gridResults[result.color_b][4*result.color_a + subIndexes[result.color_a][result.color_b]] <<= 0;
+            gridResults[result.color_b][result.color_a + subIndexes[result.color_b][result.color_a]] = 0;
+            subIndexes[result.color_a][result.color_b]++;
+            subIndexes[result.color_b][result.color_a]++;
+          }
+          else if (result.choice_made == result.color_b) {
+            // Bit shift in 1's
+            // gridResults[result.color_b][4*result.color_a + subIndexes[result.color_a][result.color_b]] <<= 1;
+            gridResults[result.color_b][4*result.color_a + subIndexes[result.color_b][result.color_a]] = 1;
+            // Bit shift in 0's
+            // gridResults[result.color_a][4*result.color_b + subIndexes[result.color_a][result.color_b]] <<= 0;
+            // gridResults[result.color_a][result.color_b] += 1;
+            gridResults[result.color_a][result.color_b + subIndexes[result.color_a][result.color_b]] = 0;
+            subIndexes[result.color_b][result.color_a]++;
+            subIndexes[result.color_a][result.color_b]++;
           }
         };
 
         // Test print
         var printStr = ",";
         for (var i = 0; i < arrayDim; i++) {
-          printStr += "color" + i + ","
+          printStr += "color" + i + ",,,,"
         }
         printStr  += "\n";
         for (var i = 0; i < arrayDim; i++) {
           printStr += "color "  + i;
-          for (var j = 0; j < arrayDim; j++) {
+          for (var j = 0; j < 4*arrayDim; j++) {
             printStr += ", " + gridResults[i][j];
           }
           printStr += "\n";
