@@ -54,7 +54,6 @@
       <div class="row">
         <div class="col-xs-12">
           <h3>Results</h3>
-          <h4>(Results are bit packed! For example a result of 3 means 0011 or that two tests were true)</h4>
         </div>
         <div class="col-xs-12">
           <table id="results" class="table table-striped table-hover">
@@ -101,8 +100,8 @@
         var arrayDim = colors.length;
         var gridResults = new Array();
           for (var i = 0; i < arrayDim; i++) {
-            gridResults[i] = new Array(4*arrayDim);
-            for (var j = 0; j < 4*arrayDim; j++) {
+            gridResults[i] = new Array(arrayDim);
+            for (var j = 0; j < arrayDim; j++) {
               gridResults[i][j] = 0;
             }
           }
@@ -120,37 +119,22 @@
         for (var i = 0; i < results.length; i++) {
           var result = results[i];
           if (result.choice_made == result.color_a) {
-            // Bit shift in 1's
-            // gridResults[result.color_a][4*result.color_b + subIndexes[result.color_a][result.color_b]] <<= 1;
-            gridResults[result.color_a][4*result.color_b + subIndexes[result.color_a][result.color_b]] = 1;
-            // Bit shift in 0's
-            // gridResults[result.color_b][4*result.color_a + subIndexes[result.color_a][result.color_b]] <<= 0;
-            gridResults[result.color_b][result.color_a + subIndexes[result.color_b][result.color_a]] = 0;
-            subIndexes[result.color_a][result.color_b]++;
-            subIndexes[result.color_b][result.color_a]++;
+            gridResults[result.color_a][result.color_b]++;
           }
           else if (result.choice_made == result.color_b) {
-            // Bit shift in 1's
-            // gridResults[result.color_b][4*result.color_a + subIndexes[result.color_a][result.color_b]] <<= 1;
-            gridResults[result.color_b][4*result.color_a + subIndexes[result.color_b][result.color_a]] = 1;
-            // Bit shift in 0's
-            // gridResults[result.color_a][4*result.color_b + subIndexes[result.color_a][result.color_b]] <<= 0;
-            // gridResults[result.color_a][result.color_b] += 1;
-            gridResults[result.color_a][result.color_b + subIndexes[result.color_a][result.color_b]] = 0;
-            subIndexes[result.color_b][result.color_a]++;
-            subIndexes[result.color_a][result.color_b]++;
+            gridResults[result.color_b][result.color_a]++;
           }
         };
 
         // Test print
         var printStr = ",";
         for (var i = 0; i < arrayDim; i++) {
-          printStr += "color" + i + ",,,,"
+          printStr += "color " + i + ","
         }
         printStr  += "\n";
         for (var i = 0; i < arrayDim; i++) {
           printStr += "color "  + i;
-          for (var j = 0; j < 4*arrayDim; j++) {
+          for (var j = 0; j < arrayDim; j++) {
             printStr += ", " + gridResults[i][j];
           }
           printStr += "\n";
